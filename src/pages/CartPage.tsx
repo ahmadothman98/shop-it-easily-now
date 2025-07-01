@@ -36,10 +36,10 @@ const CartPage = () => {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
             {cartItems.map((item) => (
-              <div key={`${item.id}-${item.color}`} className="flex gap-4 p-4 border border-gray-200 rounded-lg">
+              <div key={item.id} className="flex gap-4 p-4 border border-gray-200 rounded-lg">
                 <div className="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src={item.image}
+                    src={'https://wearlumine.com/qweqwe/sunglasses/' + item.image}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
@@ -55,14 +55,14 @@ const CartPage = () => {
                   <div className="flex items-center gap-4 mt-2">
                     <div className="flex items-center border border-gray-300 rounded">
                       <button
-                        onClick={() => updateQuantity(`${item.id}-${item.color}`, item.quantity - 1)}
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         className="px-3 py-1 hover:bg-gray-100"
                       >
                         -
                       </button>
                       <span className="px-3 py-1 border-x border-gray-300">{item.quantity}</span>
                       <button
-                        onClick={() => updateQuantity(`${item.id}-${item.color}`, item.quantity + 1)}
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         className="px-3 py-1 hover:bg-gray-100"
                       >
                         +
@@ -70,7 +70,7 @@ const CartPage = () => {
                     </div>
                     
                     <button
-                      onClick={() => removeFromCart(`${item.id}-${item.color}`)}
+                      onClick={() => removeFromCart(item.id)}
                       className="text-red-500 hover:text-red-700"
                     >
                       <Trash2 size={20} />

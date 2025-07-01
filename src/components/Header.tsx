@@ -13,8 +13,8 @@ const Header = () => {
   return (
     <header className="bg-black text-white relative z-50">
       {/* Top bar with offer */}
-      <div className="bg-gray-800 text-center py-2 text-sm">
-        Sign up now to get 25% off on your first order!
+      <div className="bg-white text-black text-center py-2 text-sm">
+       Free Delivery On Orders Above $40
       </div>
       
       {/* Main header */}
@@ -30,7 +30,7 @@ const Header = () => {
 
           {/* Logo */}
           <Link to="/" className="text-2xl font-bold tracking-wider">
-            LUMINE
+            <img src="https://wearlumine.com/assets/favicon.ico"  style={{width:'140px', height:'70px' }} className="invert w-full h-full object-cover" alt="" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -43,7 +43,6 @@ const Header = () => {
 
           {/* Icons */}
           <div className="flex items-center space-x-4">
-            <Search size={20} className="cursor-pointer hover:text-gray-300" />
             <User size={20} className="cursor-pointer hover:text-gray-300" />
             <Link to="/cart" className="relative cursor-pointer hover:text-gray-300">
               <ShoppingCart size={20} />

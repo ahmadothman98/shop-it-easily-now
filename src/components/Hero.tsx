@@ -3,11 +3,14 @@ import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   return (
-    <div className="relative bg-black text-white min-h-[70vh] flex items-center">
+    <div style={{
+      backgroundColor: 'black'
+    }} className="relative bg-black text-white min-h-[70vh] flex items-center">
       {/* Background image placeholder */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40">
         <img 
-          src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=1200&h=800&fit=crop" 
+          style={{opacity: '50%'}}
+          src="../imgs/hero.jpg" 
           alt="Sunglasses background"
           className="w-full h-full object-cover"
         />

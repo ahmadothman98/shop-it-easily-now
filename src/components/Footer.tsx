@@ -1,5 +1,5 @@
 
-import { MessageCircle, Facebook, Instagram, Twitter } from "lucide-react";
+import { MessageCircle, Facebook, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -44,7 +44,6 @@ const Footer = () => {
             <div className="flex space-x-4 mb-6">
               <Facebook size={20} className="hover:text-gray-300 cursor-pointer" />
               <Instagram size={20} className="hover:text-gray-300 cursor-pointer" />
-              <Twitter size={20} className="hover:text-gray-300 cursor-pointer" />
             </div>
             <p className="text-sm text-gray-400 mb-4">@luminelb</p>
             <button className="bg-white text-black px-6 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition-colors">
@@ -53,14 +52,6 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-4">
-          <div className="flex justify-center space-x-4">
-            <MessageCircle size={16} />
-            <Facebook size={16} />
-            <Instagram size={16} />
-            <Twitter size={16} />
-          </div>
-        </div>
       </div>
     </footer>
   );

@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 const ProductCategories = () => {
   const categories = [
     {
-      name: "Minimalist",
-      image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop"
+      name: "Lumine Metals",
+      image: "https://wearlumine.com/qweqwe/sunglasses/lumine website edited (18 of 175).jpg?w=400&h=400&fit=crop"
     },
     {
-      name: "Retro",
-      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop"
+      name: "Lumine essentials",
+      image: "https://wearlumine.com/qweqwe/sunglasses/lumine website edited (5 of 175).jpg?w=400&h=400&fit=crop"
     },
     {
-      name: "Special",
-      image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop"
+      name: "Limited Edit",
+      image: "https://wearlumine.com/qweqwe/sunglasses/lumine website edited (2 of 175).jpg?w=400&h=400&fit=crop"
     }
   ];
 

@@ -164,7 +164,7 @@ const CheckoutPage = () => {
                 
                 <div className="space-y-4 mb-6">
                   {cartItems.map((item) => (
-                    <div key={`${item.id}-${item.color}`} className="flex gap-3">
+                    <div key={item.id} className="flex gap-3">
                       <div className="w-16 h-16 bg-gray-200 rounded overflow-hidden">
                         <img
                           src={item.image}

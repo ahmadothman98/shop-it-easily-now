@@ -1,28 +1,59 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
 
 const ProductShowcase = () => {
+    const { addToCart } = useCart();
+  
+  const handleAddToCart = (product) => {
+      console.log(product);
+      
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: 1,
+    });
+    toast.success("Added to cart!");
+  };
+
   const products = [
     {
-      id: "plastic-retro",
-      name: "Plastic Retro",
-      price: 19,
-      image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=300&h=200&fit=crop"
+        "id": 11,
+        "name": "MIami",
+        "color": "Pink",
+        "price": 20,
+        "available_stock": 4,
+        "image": 
+            "lumine-website-edited-(34-of-175).jpg"
+        ,
     },
     {
-      id: "retro-polarized", 
-      name: "Retro Polarized",
-      price: 16,
-      image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&h=200&fit=crop"
+        "id": 1,
+        "name": "Soho",
+        "color": "Black",
+        "price": 19,
+        "available_stock": 12,
+        "image": 
+            "lumine website edited (5 of 175).jpg"
+        
     },
     {
-      id: "vintage-oval",
-      name: "Vintage Oval", 
-      price: 17,
-      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&h=200&fit=crop"
-    }
-  ];
+        "id": 14,
+        "name": "Orbit",
+        "size": "small",
+      "color": "Black-lens,gold-metal",
+      "price": 45,
+        "available_stock": 1,
+        "image": 
+            "lumine website edited (1 of 175).jpg"
+        
+    },
+      
+]
 
   return (
     <section className="py-16 bg-white">
@@ -38,24 +69,31 @@ const ProductShowcase = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {products.map((product) => (
+            <div style={{display: 'flex', flexDirection: 'column',}}>
             <Link
               key={product.id}
-              to={`/product/${product.id}`}
+              to={`/product/${product.id}/${product.color}`}
               className="group text-center"
             >
               <div className="bg-gray-200 rounded-lg overflow-hidden mb-4 aspect-square">
                 <img
-                  src={product.image}
+                  src={'https://wearlumine.com/qweqwe/sunglasses/'+product.image}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">{product.name}</h3>
               <p className="text-xl font-bold">${product.price}</p>
-              <div className="w-full bg-black text-white py-2 mt-2 rounded text-center">
-                Add to Cart
-              </div>
             </Link>
+
+              <Button
+              onClick={()=>handleAddToCart(product)}
+                className="w-full bg-black text-white py-2 mt-2 rounded text-center">
+
+                Add to Cart
+              </Button>
+            </div>
+
           ))}
         </div>
 
