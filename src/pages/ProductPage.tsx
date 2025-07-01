@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ const ProductPage = () => {
     window.scrollTo(0, 0);
   }, []); // Runs once on component mount
   const { id } = useParams();
+  
   const { color } = useParams();
   const { addToCart } = useCart();
   const product_list = [
@@ -24,7 +25,8 @@ const ProductPage = () => {
         "available_stock": 2,
         "images": [
             "lumine website edited (11 of 175).jpg"
-        ],
+      ],
+        "category": '',
     },
     {
         "id": 1,
@@ -53,7 +55,7 @@ const ProductPage = () => {
         "price": 19,
         "available_stock": 2,
         "images": [
-            "llumine website edited (9 of 175).jpg"
+            "lumine website edited (9 of 175).jpg"
         ]
     },
     {
@@ -415,13 +417,13 @@ useEffect(() => {
 }, [color]);
 console.log(color);
 
-  
+    console.log(id);
+  console.log(selectedColor);
+
   const product = product_list.find(p => {    
-    console.log(p.id.toString() == id && (p.color.toLocaleLowerCase() == selectedColor.toLocaleLowerCase()));
     
     return p.id.toString() == id && (selectedColor ? (p.color.toLocaleLowerCase() == selectedColor.toLocaleLowerCase()) : true)
   })  
-  console.log(product);
   
   
   const [quantity, setQuantity] = useState(1);
@@ -444,13 +446,30 @@ console.log(color);
     //   "Comfortable fit"
     // ]
   // };
+function getRandomNumberInRangeExcluding(min, max, exclusions = []) {
+  const validNumbers = [];
 
+  for (let i = min; i <= max; i++) {
+    if (!exclusions.includes(i)) {
+      validNumbers.push(i);
+    }
+  }
+
+  if (validNumbers.length === 0) {
+    throw new Error("No valid numbers available in the range.");
+  }
+
+  const randomIndex = Math.floor(Math.random() * validNumbers.length);
+  return validNumbers[randomIndex];
+}
+  
+  const random_products =[product_list[getRandomNumberInRangeExcluding(0,product_list.length,[product_list.indexOf(product)])],product_list[getRandomNumberInRangeExcluding(0,product_list.length,[product_list.indexOf(product)])],product_list[getRandomNumberInRangeExcluding(0,product_list.length,[product_list.indexOf(product)])],product_list[getRandomNumberInRangeExcluding(0,product_list.length,[product_list.indexOf(product)])]]
   const handleAddToCart = () => {
     addToCart({
-      id: product.id.toString(),
-      name: product.name,
-      price: product.price,
-      image: product.images[0],
+      id: product?.id.toString(),
+      name: product?.name,
+      price: product?.price,
+      image: product?.images[0],
       quantity: quantity,
       color: selectedColor
     });
@@ -467,17 +486,17 @@ console.log(color);
           <div className="space-y-4">
             <div className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
               <img
-                src={'https://wearlumine.com/qweqwe/sunglasses/' + product.images[0]}
-                alt={product.name}
+                src={'https://wearlumine.com/qweqwe/sunglasses/' + product?.images[0]}
+                alt={product?.name}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {product.images.map((image, index) => (
+              {product?.images.map((image, index) => (
                 <div key={index} className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
                   <img
                     src={'https://wearlumine.com/qweqwe/sunglasses/' + image}
-                    alt={`${product.name} ${index + 1}`}
+                    alt={`${product?.name} ${index + 1}`}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -488,11 +507,11 @@ console.log(color);
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
-              <p className="text-2xl font-bold">${product.price}</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">{product?.name}</h1>
+              <p className="text-2xl font-bold">${product?.price}</p>
             </div>
 
-            {/* <p className="text-gray-600 leading-relaxed">{product.description}</p> */}
+            {/* <p className="text-gray-600 leading-relaxed">{product?.description}</p> */}
 
             {/* Color Selection */}
             <div>
@@ -500,11 +519,11 @@ console.log(color);
               <div className="flex space-x-3">
                 {product_list.filter(p=> p.id.toString() == id).map((product) => (
                   <button
-                    key={product.color}
-                    onClick={() => setSelectedColor(product.color)}
+                    key={product?.color}
+                    onClick={() => setSelectedColor(product?.color)}
                     className={`w-8 h-8 rounded-full border-2 ${
-                      selectedColor === product.color ? "border-black" : "border-gray-300"
-                    } bg-${product.color}`}
+                      selectedColor === product?.color ? "border-black" : "border-gray-300"
+                    } bg-${product?.color}`}
                     
                   />
                 ))}
@@ -543,7 +562,7 @@ console.log(color);
             {/* <div className="border-t pt-6">
               <h3 className="font-semibold mb-4">What's in the box?</h3>
               <ul className="space-y-2 text-gray-600">
-                {product.features.map((feature, index) => (
+                {product?.features.map((feature, index) => (
                   <li key={index}>• {feature}</li>
                 ))}
               </ul>
@@ -556,17 +575,23 @@ console.log(color);
           <h2 className="text-2xl font-bold text-center mb-8">You might also like</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3].map((item) => (
+              <Link onClick={()=>{window.scrollTo(0, 0);}}
+                            key={random_products[item]?.id + random_products[item]?.color }
+                            to={`/product/${random_products[item]?.id}/${random_products[item]?.color}`}>
+                
               <div key={item} className="text-center">
                 <div className="bg-gray-200 aspect-square rounded-lg mb-4">
                   <img
-                    src={'https://wearlumine.com/qweqwe/sunglasses/' + product_list[item*10].images[0]}
+                    src={'https://wearlumine.com/qweqwe/sunglasses/' + random_products[item]?.images[0]}
                     alt={`Related product ${item}`}
                     className="w-full h-full object-cover rounded-lg"
                   />
                 </div>
-                <h3 className="font-semibold mb-2">{ product_list[item*10].name}</h3>
+                <h3 className="font-semibold mb-2">{ random_products[item]?.name}</h3>
                 <p className="font-bold">${product_list[item * 10].price}</p>
-              </div>
+                </div>
+                            </Link>
+                
             ))}
           </div>
         </div>

@@ -97,12 +97,9 @@ const CartPage = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span>Free</span>
+                  <span>{getCartTotal() > 40? 'Free' : '$2' }</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Tax</span>
-                  <span>$0</span>
-                </div>
+    
               </div>
               
               <div className="border-t pt-4 mb-6">
