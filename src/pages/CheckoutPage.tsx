@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -8,6 +7,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 import { toast } from "sonner";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "@/firebase";
 
 const CheckoutPage = () => {
   const { cartItems, getCartTotal, clearCart } = useCart();
@@ -19,47 +20,179 @@ const CheckoutPage = () => {
     phone: "",
     address: "",
     city: "",
-    postalCode: ""
+    street_bldg: "",
+    discount: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Basic form validation
-    const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city'];
-    const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData]);
-    
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "email",
+      "phone",
+      "address",
+      "city",
+      "discount",
+    ];
+    const missingFields = requiredFields.filter(
+      (field) => !formData[field as keyof typeof formData]
+    );
+
     if (missingFields.length > 0) {
       toast.error("Please fill in all required fields");
       return;
     }
 
+    await sendOrder();
     // Simulate order processing
     toast.success("Order placed successfully!");
     clearCart();
-    
+
     // In a real app, you would redirect to a success page
-    console.log("Order submitted:", { formData, paymentMethod, items: cartItems, total: getCartTotal() });
+    console.log("Order submitted:", {
+      formData,
+      paymentMethod,
+      items: cartItems,
+      total: getCartTotal(),
+    });
   };
+
+  async function sendOrder() {
+    const orderDetails = {
+      formData,
+      paymentMethod,
+      items: cartItems,
+      total: getCartTotal(),
+    };
+    try {
+      const docRef = await addDoc(collection(db, "orders"), {
+        ...orderDetails,
+        createdAt: Timestamp.now(),
+      });
+      console.log("Order saved with ID: ", docRef.id);
+      await sendEmail(orderDetails);
+      await sendEmailz(orderDetails);
+      // Optionally show confirmation or redirect
+    } catch (error) {
+      console.error("Error saving order: ", error);
+    }
+  }
+
+  async function sendEmail(order) {
+    const payload = {
+      email: order.formData.email,
+
+      subject: "Order Confirmation",
+      message: `Thanks for your order!Total: ${order.total}`,
+      headers: "From: LUMINE <team@wearlumine.com>",
+    };
+
+    try {
+      const res = await fetch("https://wearlumine.com/mail.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      console.log(res);
+
+      const json = await res.json();
+      if (json.success) {
+        console.log("Email sent successfully!");
+      } else {
+        console.error("Email send error:", json.error);
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
+  }
+
+  async function sendEmailz(order) {
+    const payload = {
+      email: "abedothman2003@gmail.com",
+
+      subject: "Order Confirmation",
+      message: JSON.stringify(order),
+      headers: "From: LUMINE <team@wearlumine.com>",
+    };
+
+    try {
+      const res = await fetch("https://wearlumine.com/mail.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      console.log(res);
+
+      const json = await res.json();
+      if (json.success) {
+        console.log("Email sent successfully!");
+      } else {
+        console.error("Email send error:", json.error);
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
+  }
+
+  // async function sendOrderEmail(order) {
+  //   try {
+  //     const response = await fetch('https://wearlumine.com/mail.php', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         email: order.formData.email,
+  //         name: order.formData.firstName + order.formData.lastName,
+  //         total: order.total,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (data.success) {
+  //       console.log('Email sent successfully');
+  //     } else {
+  //       console.error('Email sending failed:', data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error sending email:', error);
+  //   }
+  // }
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
+
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Checkout</h1>
-        
+
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Checkout Form */}
             <div className="space-y-8">
+              <div>
+                <h2 className="text-xl font-semibold mb-4">Contact Info</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    name="discount"
+                    placeholder="Discount Code"
+                    value={formData.discount}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              </div>
               {/* Information Section */}
               <div>
                 <h2 className="text-xl font-semibold mb-4">Information</h2>
@@ -101,25 +234,26 @@ const CheckoutPage = () => {
                 <h2 className="text-xl font-semibold mb-4">Shipping Address</h2>
                 <div className="space-y-4">
                   <Input
-                    name="address"
-                    placeholder="Address"
-                    value={formData.address}
+                    name="city"
+                    placeholder="City"
+                    value={formData.city}
                     onChange={handleInputChange}
                     required
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <Input
-                      name="city"
-                      placeholder="City"
-                      value={formData.city}
+                      name="street_bldg"
+                      placeholder="Street & Bldg"
+                      value={formData.street_bldg}
                       onChange={handleInputChange}
                       required
                     />
                     <Input
-                      name="postalCode"
-                      placeholder="Postal Code"
-                      value={formData.postalCode}
+                      name="address"
+                      placeholder="Address Details"
+                      value={formData.address}
                       onChange={handleInputChange}
+                      required
                     />
                   </div>
                   <Input
@@ -135,21 +269,26 @@ const CheckoutPage = () => {
 
               {/* Payment Method */}
               <div>
-                <h2 className="text-xl font-semibold mb-4">Choose Your Payment Method</h2>
-                <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
+                <h2 className="text-xl font-semibold mb-4">
+                  Choose Your Payment Method
+                </h2>
+                <RadioGroup
+                  value={paymentMethod}
+                  onValueChange={setPaymentMethod}
+                >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="cash" id="cash" />
                     <Label htmlFor="cash">Cash on delivery</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="card" id="card" />
-                    <Label htmlFor="card">Debit/Credit Card</Label>
+                    <RadioGroupItem value="whish" id="whish" />
+                    <Label htmlFor="whish">Whish</Label>
                   </div>
                 </RadioGroup>
               </div>
 
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full bg-black text-white hover:bg-gray-800"
                 size="lg"
               >
@@ -161,24 +300,33 @@ const CheckoutPage = () => {
             <div>
               <div className="bg-gray-50 p-6 rounded-lg sticky top-4">
                 <h2 className="text-xl font-semibold mb-4">Your Order</h2>
-                
+
                 <div className="space-y-4 mb-6">
                   {cartItems.map((item) => (
                     <div key={item.id} className="flex gap-3">
                       <div className="w-16 h-16 bg-gray-200 rounded overflow-hidden">
                         <img
-                          src={item.image}
+                          src={
+                            "https://www.wearlumine.com/qweqwe/sunglasses/" +
+                            item.image
+                          }
                           alt={item.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-medium">{item.name}</h4>
-                        {item.color && <p className="text-sm text-gray-600 capitalize">{item.color}</p>}
+                        {item.color && (
+                          <p className="text-sm text-gray-600 capitalize">
+                            {item.color}
+                          </p>
+                        )}
                         <p className="text-sm">Qty: {item.quantity}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                        <p className="font-semibold">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -191,11 +339,17 @@ const CheckoutPage = () => {
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
-                    <span>Free</span>
+                    <span>{getCartTotal() > 50 ? "Free" : "$4"}</span>{" "}
                   </div>
                   <div className="flex justify-between">
                     <span>Total</span>
-                    <span>${getCartTotal().toFixed(2)}</span>
+                    <span>
+                      $
+                      {(
+                        Number(getCartTotal().toFixed(2)) +
+                        (getCartTotal() > 50 ? 0 : 4)
+                      ).toFixed(2)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -203,7 +357,7 @@ const CheckoutPage = () => {
           </div>
         </form>
       </div>
-      
+
       <Footer />
     </div>
   );

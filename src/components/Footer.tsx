@@ -1,4 +1,3 @@
-
 import { MessageCircle, Facebook, Instagram } from "lucide-react";
 
 const Footer = () => {
@@ -22,9 +21,21 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Shop</h4>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-white transition-colors">Collections</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">New arrivals</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Best Sellers</a></li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Collections
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  New arrivals
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Best Sellers
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -32,26 +43,47 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">About</h4>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-white transition-colors">Our story</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Shipping info</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms Policy</a></li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Our story
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Shipping info
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Terms Policy
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Social & Newsletter */}
           <div>
             <div className="flex space-x-4 mb-6">
-              <Facebook size={20} className="hover:text-gray-300 cursor-pointer" />
-              <Instagram size={20} className="hover:text-gray-300 cursor-pointer" />
+              <Facebook
+                size={20}
+                className="hover:text-gray-300 cursor-pointer"
+              />
+              <Instagram
+                size={20}
+                className="hover:text-gray-300 cursor-pointer"
+              />
             </div>
             <p className="text-sm text-gray-400 mb-4">@luminelb</p>
-            <button className="bg-white text-black px-6 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition-colors">
+            {/* <button className="bg-white text-black px-6 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition-colors">
               SIGN UP
-            </button>
+            </button> */}
           </div>
         </div>
-
       </div>
     </footer>
   );
