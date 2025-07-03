@@ -107,10 +107,6 @@ const CartPage = () => {
                   <span>Subtotal</span>
                   <span>${getCartTotal().toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Shipping</span>
-                  <span>{getCartTotal() > 50 ? "Free" : "$4"}</span>
-                </div>
               </div>
 
               <div className="border-t pt-4 mb-6">

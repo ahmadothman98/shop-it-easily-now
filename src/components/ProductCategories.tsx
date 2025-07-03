@@ -2,17 +2,19 @@ import { Link } from "react-router-dom";
 
 const ProductCategories = () => {
   const categories = [
-    {
+    { code: "metals",
       name: "Lumine Metals",
       image:
         "https://wearlumine.com/qweqwe/imgs/metals.jpg?w=400&h=400&fit=crop",
     },
     {
+      code: "essentials",
       name: "Lumine essentials",
       image:
         "https://wearlumine.com/qweqwe/imgs/essentials.jpg?w=400&h=400&fit=crop",
     },
     {
+      code: "special",
       name: "The Limited Edit",
       image:
         "https://wearlumine.com/qweqwe/imgs/special.jpg?w=400&h=400&fit=crop",
@@ -26,7 +28,7 @@ const ProductCategories = () => {
           {categories.map((category) => (
             <Link
               key={category.name}
-              to={`/collections?category=${category.name.toLowerCase()}`}
+              to={`/collections?category=${category.code.toLowerCase()}`}
               className="group text-center"
             >
               <div className="relative overflow-hidden rounded-full w-24 h-24 sm:w-36 sm:h-36 md:w-48 md:h-48 mx-auto mb-2 sm:mb-4 shadow-md">

@@ -101,3 +101,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+@font-face {
+  font-family: 'NOCTADO-400';
+  src: url('/src/assets/fonts/NOCTADO-400.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+*{
+  font-family: 'NOCTADO-400', sans-serif;
+}

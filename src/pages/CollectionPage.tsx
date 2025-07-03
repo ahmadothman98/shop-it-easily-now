@@ -339,7 +339,7 @@ const CollectionPage = () => {
       id: 13,
       name: "Cannes",
       category: "essentials",
-      color: "Offwhite, Brownlens",
+      color: "Offwhite-Brownlens",
       price: 22,
       available_stock: 1,
       images: ["lumine website edited (20 of 175).jpg"],
@@ -349,7 +349,7 @@ const CollectionPage = () => {
       name: "Orbit",
       category: "special",
       size: "large",
-      color: "Black-lens, silver-metal",
+      color: "Black-lens-silver-metal",
       price: 45,
       available_stock: 1,
       images: ["lumine website edited (2 of 175).jpg"],
@@ -359,7 +359,7 @@ const CollectionPage = () => {
       name: "Orbit",
       category: "special",
       size: "small",
-      color: "Black-lens,gold-metal",
+      color: "Black-lens-gold-metal",
       price: 45,
       available_stock: 1,
       images: ["lumine website edited (1 of 175).jpg"],
@@ -436,7 +436,7 @@ const CollectionPage = () => {
 
           {/* Products Grid */}
           <div className="lg:w-3/4">
-            <div className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
               {uniqueProducts.map((product) => (
                 <Link
                   key={product.id}

@@ -40,7 +40,7 @@ const ProductShowcase = () => {
       id: 14,
       name: "Orbit",
       size: "small",
-      color: "Black-lens,gold-metal",
+      color: "Black-lens-gold-metal",
       price: 45,
       available_stock: 1,
       image: "lumine website edited (1 of 175).jpg",
@@ -62,7 +62,7 @@ const ProductShowcase = () => {
               <Link
                 key={product.id}
                 to={`/product/${product.id}/${product.color}`}
-                className="group text-center"
+                className="group"
               >
                 <div className="bg-gray-200 rounded-lg overflow-hidden mb-4 aspect-square">
                   <img
@@ -74,7 +74,7 @@ const ProductShowcase = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <h3 className=" text-sm sm:text-base font-semibold text-gray-900 mb-2">
+                <h3 className=" text-sm sm:text-base text-gray-900 mb-2">
                   {product.name}
                 </h3>
                 <p className="text-sm sm:text-base md:text-xl font-bold">
