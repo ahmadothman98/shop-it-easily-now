@@ -7,23 +7,23 @@ const Hero = () => {
       style={{
         backgroundColor: "black",
       }}
-      className="relative bg-black text-white min-h-[70vh] flex items-center"
+      className="relative bg-black text-white min-h-[70vh] flex items-center overflow-hidden"
     >
       {/* Background image placeholder */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40">
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40 overflow-hidden">
         <img
           style={{ opacity: "25%" }}
           src="https://wearlumine.com/qweqwe/imgs/hero.jpg"
           alt="Sunglasses background"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-center scale-y-[2] scale-x-[2] md:scale-[1]"
         />
       </div>
 
-      <div className="relative container mx-auto px-4 text-center">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6">
+      <div className="relative container mx-auto px-4 text-center pt-32 md:pt-48">
+        <h1 className="text-3xl md:text-7xl font-bold mb-6">
           Not Made To Hide.
         </h1>
-        <p className="text-xl md:text-2xl mb-8 text-gray-200">
+        <p className="text-l md:text-2xl mb-8 text-gray-200">
           Premium sunglasses crafted for those who see differently.
         </p>
         <Link

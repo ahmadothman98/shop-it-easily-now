@@ -33,9 +33,9 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="text-2xl font-bold tracking-wider">
             <img
-              src="https://wearlumine.com/qweqwe/imgs/favicon.ico"
-              style={{ width: "140px", height: "70px" }}
-              className="invert w-full h-full object-cover"
+              src="https://wearlumine.com/qweqwe/imgs/white-black-logo.png"
+              style={{ width: "110px", height: "48px" }}
+              className="w-full h-full object-cover md:w-[140px] md:h-[70px] "
               alt=""
             />
           </Link>

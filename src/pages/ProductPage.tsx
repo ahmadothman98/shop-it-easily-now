@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -7,6 +7,17 @@ import { CartProvider, useCart } from "../context/CartContext";
 import { toast } from "sonner";
 import "../colors.css";
 
+export type CartItem = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  quantity: number;
+  color: string;
+  preorder?: boolean;
+  available_stock?: number; // <-- Add this line
+};
+
 const ProductPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -14,7 +25,7 @@ const ProductPage = () => {
   const { id } = useParams();
 
   const { color } = useParams();
-  const { addToCart } = useCart();
+  const { cartItems, addToCart } = useCart(); // Make sure cartItems is available
   const product_list = [
     {
       id: 1,
@@ -372,6 +383,8 @@ const ProductPage = () => {
   ];
   const [selectedColor, setSelectedColor] = useState("black");
   const [added_items, setAddedItems] = useState([]);
+  const [randomProducts, setRandomProducts] = useState([]);
+  const [showPreorderModal, setShowPreorderModal] = useState(false);
 
   useEffect(() => {
     setSelectedColor(color);
@@ -388,24 +401,6 @@ const ProductPage = () => {
 
   const [quantity, setQuantity] = useState(1);
 
-  // Mock product data
-  // {
-  // id: id || "l3-metal-retro",
-  // name: "L3: Metal Retro",
-  // price: 19,
-  // images: [
-  //   "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&h=400&fit=crop",
-  //   "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&h=400&fit=crop"
-  // ],
-  // colors: ["black", "gold", "silver"],
-  // description: "Premium sunglasses with vintage design and cutting-edge protection.",
-  // features: [
-  //   "UV 400 protection",
-  //   "Polarized lenses",
-  //   "Durable metal frame",
-  //   "Comfortable fit"
-  // ]
-  // };
   function getRandomNumberInRangeExcluding(min, max, exclusions = []) {
     const validNumbers = [];
 
@@ -423,48 +418,152 @@ const ProductPage = () => {
     return validNumbers[randomIndex];
   }
 
-  const random_products = [
-    product_list[
-      getRandomNumberInRangeExcluding(0, product_list.length, [
-        product_list.indexOf(product),
-      ])
-    ],
-    product_list[
-      getRandomNumberInRangeExcluding(0, product_list.length, [
-        product_list.indexOf(product),
-      ])
-    ],
-    product_list[
-      getRandomNumberInRangeExcluding(0, product_list.length, [
-        product_list.indexOf(product),
-      ])
-    ],
-    product_list[
-      getRandomNumberInRangeExcluding(0, product_list.length, [
-        product_list.indexOf(product),
-      ])
-    ],
-  ];
-  const handleAddToCart = () => {
-    setAddedItems([
-      ...added_items,
-      { id: product?.id.toString(), color: selectedColor },
-    ]);
+  useEffect(() => {
+    const exclusions = [product_list.indexOf(product)];
+    const selectedProducts = [
+      product_list[
+        getRandomNumberInRangeExcluding(0, product_list.length, exclusions)
+      ],
+      product_list[
+        getRandomNumberInRangeExcluding(0, product_list.length, exclusions)
+      ],
+      product_list[
+        getRandomNumberInRangeExcluding(0, product_list.length, exclusions)
+      ],
+    ];
+    setRandomProducts(selectedProducts);
+  }, []); // Empty dependency array ensures this runs only once on mount
 
+  const handleAddToCart = async () => {
+    if (!product) return;
+
+    // Find existing cart item for this product/color
+    const existingCartItem = cartItems.find(
+      (item) =>
+        item.id === product?.id?.toString() &&
+        item.color?.toLowerCase() === selectedColor?.toLowerCase()
+    );
+    const cartQty = existingCartItem ? existingCartItem.quantity : 0;
+    const totalRequested = cartQty + quantity;
+
+    if (
+      product.available_stock === 0 ||
+      totalRequested > product.available_stock
+    ) {
+      setShowPreorderModal(true);
+      return;
+    }
+
+    // Normal add to cart
     addToCart({
-      id: product?.id.toString(),
-      name: product?.name,
-      price: product?.price,
-      image: product?.images[0],
+      id: product.id.toString(),
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
       quantity: quantity,
       color: selectedColor,
+      preorder: false,
+      available_stock: product.available_stock,
     });
     toast.success("Added to cart!");
+    setAddedItems([
+      ...added_items,
+      { id: product.id.toString(), color: selectedColor, preorder: false },
+    ]);
   };
 
+  const handlePreorderConfirm = () => {
+    // Find existing cart item for this product/color
+    const existingCartItem = cartItems.find(
+      (item) =>
+        item.id === product?.id?.toString() &&
+        item.color?.toLowerCase() === selectedColor?.toLowerCase()
+    );
+    const cartQty = existingCartItem ? existingCartItem.quantity : 0;
+    const preorderQty = Math.max(
+      cartQty + quantity - (product?.available_stock ?? 0),
+      0
+    );
+
+    // Add only the preorder quantity as preorder
+    if (preorderQty > 0) {
+      addToCart({
+        id: product.id.toString(),
+        name: product.name,
+        price: product.price,
+        image: product.images[0],
+        quantity: preorderQty,
+        color: selectedColor,
+        preorder: true,
+        available_stock: product.available_stock,
+      });
+      toast.success("Added to cart as preorder!");
+      setAddedItems([
+        ...added_items,
+        { id: product.id.toString(), color: selectedColor, preorder: true },
+      ]);
+    }
+    setShowPreorderModal(false);
+  };
+
+  const handlePreorderCancel = () => {
+    setShowPreorderModal(false);
+  };
+
+  const existingCartItem = cartItems.find(
+    (item) =>
+      item.id === product?.id?.toString() &&
+      item.color?.toLowerCase() === selectedColor?.toLowerCase()
+  );
+  const cartQty = existingCartItem ? existingCartItem.quantity : 0;
+  const preorderQty = Math.max(
+    cartQty + quantity - (product?.available_stock ?? 0),
+    0
+  );
   return (
     <div className="min-h-screen bg-white">
       <Header />
+
+      {/* Preorder Modal */}
+      {showPreorderModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full text-center">
+            <h2 className="text-xl font-bold mb-4 text-gray-900">
+              Preorder Item
+            </h2>
+            // inside your modal
+            <p className="mb-6 text-gray-700">
+              This item is out of stock or you exceeded the available stock.
+              <br />
+              <br />
+              <span className="font-semibold">
+                Available Stock {product?.available_stock}
+              </span>
+              <br />
+              <br />
+              Would you like to preorder
+              <span className="font-semibold">
+                {preorderQty} {product?.name}-{selectedColor}
+              </span>
+              ?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handlePreorderCancel}
+                className="px-6 py-2 rounded bg-gray-200 text-gray-800 hover:bg-gray-300 font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handlePreorderConfirm}
+                className="px-6 py-2 rounded bg-black text-white hover:bg-gray-900 font-semibold"
+              >
+                Preorder
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -481,18 +580,20 @@ const ProductPage = () => {
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {product?.images.map((image, index) => (
-                <div
-                  key={index}
-                  className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
-                >
-                  <img
-                    src={"https://wearlumine.com/qweqwe/sunglasses/" + image}
-                    alt={`${product?.name} ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
+              {product?.images
+                .filter((image, index) => index !== 0)
+                .map((image, index) => (
+                  <div
+                    key={index}
+                    className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
+                  >
+                    <img
+                      src={"https://wearlumine.com/qweqwe/sunglasses/" + image}
+                      alt={`${product?.name} ${index + 2}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
             </div>
           </div>
 
@@ -502,16 +603,14 @@ const ProductPage = () => {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 {product?.name}
               </h1>
-              <p className="text-2xl font-bold">${product?.price}</p>
+              <p className="text-2xl mb-2">${product?.price}</p>
+              {/* {product?.description} */}
             </div>
 
-            <p className="text-gray-600 leading-relaxed">
-              Available Stock: {product?.available_stock}
-            </p>
             {/* Color Selection */}
             <div>
-              <h3 className="font-semibold mb-3">Color</h3>
-              <div className="flex space-x-3">
+              <h3 className="font-semibold mb-3">Select color</h3>
+              <div className="flex space-x-3 mb-4">
                 {product_list
                   .filter((p) => p.id.toString() == id)
                   .map((product) => (
@@ -522,11 +621,28 @@ const ProductPage = () => {
                         selectedColor === product?.color
                           ? "border-black"
                           : "border-gray-300"
-                      } bg-${product?.color}`}
+                      }`}
+                      style={{
+                        background:
+                          product?.color.toLowerCase() === "black"
+                            ? "#222"
+                            : product?.color.toLowerCase() === "brown"
+                            ? "#a0522d"
+                            : product?.color.toLowerCase() === "gold"
+                            ? "#e6c200"
+                            : product?.color.toLowerCase() === "yellow"
+                            ? "#ffe066"
+                            : product?.color.toLowerCase() === "white"
+                            ? "#fff"
+                            : "#ccc",
+                      }}
+                      aria-label={product?.color}
+                      type="button"
                     />
                   ))}
               </div>
             </div>
+
             {/* Quantity */}
             <div>
               <h3 className="font-semibold mb-3">Quantity</h3>
@@ -534,6 +650,7 @@ const ProductPage = () => {
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="w-8 h-8 border border-gray-300 rounded flex items-center justify-center"
+                  type="button"
                 >
                   -
                 </button>
@@ -541,6 +658,7 @@ const ProductPage = () => {
                 <button
                   onClick={() => setQuantity(quantity + 1)}
                   className="w-8 h-8 border border-gray-300 rounded flex items-center justify-center"
+                  type="button"
                 >
                   +
                 </button>
@@ -553,47 +671,93 @@ const ProductPage = () => {
             >
               Add to cart
             </Button>
-            {/* Product Features */}
-            {/* <div className="border-t pt-6">
-              <h3 className="font-semibold mb-4">What's in the box?</h3>
-              <ul className="space-y-2 text-gray-600">
-                {product?.features.map((feature, index) => (
-                  <li key={index}>• {feature}</li>
-                ))}
-              </ul>
-            </div> */}
           </div>
         </div>
 
-        {/* Related Products */}
+        {/* What's in the box? */}
+        <div className="mt-12">
+          <h2 className="text-xl font-bold mb-4">What's in the box?</h2>
+          <div className="bg-gray-200 rounded-lg w-full h-96 lg:h-[32rem] mb-4 flex items-center justify-center overflow-hidden">
+            <img
+              src="https://wearlumine.com/qweqwe/imgs/packaging.jpg?w=600&h=400&fit=crop"
+              alt="Lumine packaging"
+              className="object-contain w-full h-full max-h-96 lg:max-h-[32rem] max-w-full"
+            />
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <span className="font-medium text-gray-800 text-center">
+                Leather Pouch
+              </span>
+            </div>
+            <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <span className="font-medium text-gray-800 text-center">
+                Magnet Box
+              </span>
+            </div>
+            <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <span className="font-medium text-gray-800 text-center">
+                Cleaning Tissue
+              </span>
+            </div>
+            <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <span className="font-medium text-gray-800 text-center">Bag</span>
+            </div>
+          </div>
+        </div>
+
+        {/* People also like */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold text-center mb-8">
-            You might also like
+            People also like
           </h2>
           <div className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            {[1, 2, 3].map((item) => (
+            {randomProducts.map((relatedProduct, index) => (
               <Link
                 onClick={() => {
                   window.scrollTo(0, 0);
+                  const exclusions = [product_list.indexOf(relatedProduct)];
+                  const selectedProducts = [
+                    product_list[
+                      getRandomNumberInRangeExcluding(
+                        0,
+                        product_list.length,
+                        exclusions
+                      )
+                    ],
+                    product_list[
+                      getRandomNumberInRangeExcluding(
+                        0,
+                        product_list.length,
+                        exclusions
+                      )
+                    ],
+                    product_list[
+                      getRandomNumberInRangeExcluding(
+                        0,
+                        product_list.length,
+                        exclusions
+                      )
+                    ],
+                  ];
+                  setRandomProducts(selectedProducts);
                 }}
-                key={random_products[item]?.id + random_products[item]?.color}
-                to={`/product/${random_products[item]?.id}/${random_products[item]?.color}`}
+                key={relatedProduct?.id + relatedProduct?.color}
+                to={`/product/${relatedProduct?.id}/${relatedProduct?.color}`}
               >
-                <div key={item} className="text-center">
+                <div className="text-center">
                   <div className="bg-gray-200 aspect-square rounded-lg mb-4">
                     <img
                       src={
                         "https://wearlumine.com/qweqwe/sunglasses/" +
-                        random_products[item]?.images[0]
+                        relatedProduct?.images[0]
                       }
-                      alt={`Related product ${item}`}
+                      alt={`Related product ${index}`}
                       className="w-full h-full object-cover rounded-lg"
                     />
                   </div>
-                  <h3 className="font-semibold mb-2">
-                    {random_products[item]?.name}
-                  </h3>
-                  <p className="font-bold">${product_list[item * 10].price}</p>
+                  <h3 className="font-semibold mb-2">{relatedProduct?.name}</h3>
+                  <p className="font-bold">${relatedProduct?.price}</p>
                 </div>
               </Link>
             ))}

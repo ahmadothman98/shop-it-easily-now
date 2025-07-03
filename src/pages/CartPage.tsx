@@ -13,7 +13,9 @@ const CartPage = () => {
       <div className="min-h-screen bg-white">
         <Header />
         <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-3xl font-bold mb-8">Shopping Bag</h1>
+          <h1 className=" lumine-title text-3xl font-bold mb-8">
+            Shopping Bag
+          </h1>
           <p className="text-gray-600 mb-8">Your cart is empty</p>
           <Link to="/collections">
             <Button>Continue Shopping</Button>
@@ -29,7 +31,7 @@ const CartPage = () => {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Shopping Bag</h1>
+        <h1 className=" lumine-title text-3xl font-bold mb-8">Shopping Bag</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}

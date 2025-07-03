@@ -1,40 +1,17 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
-import { useCart } from "../context/CartContext";
-import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
-const CollectionPage = () => {
-  const location = useLocation();
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const { addToCart } = useCart();
-
-  // Read category from URL on mount and when URL changes
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const cat = params.get("category");
-    setSelectedCategory(cat || "all");
-  }, [location.search]);
-
+const ThankYouPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []); // Runs once on component mount
+  const location = useLocation();
+  const { order } = location.state || {}; // Retrieve the order details
+  const [randomProducts, setRandomProducts] = useState([]);
 
-  const handleAddToCart = (product) => {
-    addToCart({
-      id: product.id.toString(),
-      name: product.name,
-      price: product.price,
-      image: product.images[0],
-      quantity: 1,
-      color: product.color,
-    });
-    toast.success(`${product.name} added to cart!`);
-  };
-
-  const products = [
+  const product_list = [
     {
       id: 1,
       name: "Soho",
@@ -231,7 +208,7 @@ const CollectionPage = () => {
       color: "brown",
       price: 24,
       available_stock: 1,
-      images: ["aa.jpglumine website edited (13 of 175).jpg"],
+      images: ["lumine website edited (13 of 175).jpg"],
     },
     {
       id: 8,
@@ -389,111 +366,160 @@ const CollectionPage = () => {
       images: ["lumine website edited (1 of 175).jpg"],
     },
   ];
+  useEffect(() => {
+    const getRandomNumberInRangeExcluding = (min, max, exclusions = []) => {
+      const validNumbers = [];
+      for (let i = min; i < max; i++) {
+        if (!exclusions.includes(i)) {
+          validNumbers.push(i);
+        }
+      }
+      const randomIndex = Math.floor(Math.random() * validNumbers.length);
+      return validNumbers[randomIndex];
+    };
 
-  const filteredProducts =
-    selectedCategory === "all"
-      ? products
-      : products.filter((product) => product.category === selectedCategory);
+    const exclusions = [];
+    const selectedProducts = [
+      product_list[
+        getRandomNumberInRangeExcluding(0, product_list.length, exclusions)
+      ],
+      product_list[
+        getRandomNumberInRangeExcluding(0, product_list.length, exclusions)
+      ],
+      product_list[
+        getRandomNumberInRangeExcluding(0, product_list.length, exclusions)
+      ],
+    ];
+    setRandomProducts(selectedProducts);
+  }, []);
 
-  const uniqueProducts = filteredProducts.filter(
-    (product, index, self) =>
-      self.findIndex((p) => p.id === product.id) === index
-  );
+  if (!order) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold mb-8">No order found!</h1>
+          <Link
+            to="/"
+            className="inline-block bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition-colors duration-300"
+          >
+            Continue Shopping
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar */}
-          <div className="lg:w-1/4">
-            {/* <h2 className="text-2xl font-bold mb-6">New Collection</h2>
-            <p className="text-gray-600 mb-6">Summer 2023</p>
-             */}
-            <div className="space-y-4">
-              <h3 className=" lumine-title font-semibold text-lg">
-                Categories
-              </h3>
-              <div className="space-y-2">
-                <button
-                  onClick={() => setSelectedCategory("all")}
-                  className={`block w-full text-left py-2 px-3 rounded ${
-                    selectedCategory === "all"
-                      ? "bg-black text-white"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  All
-                </button>
-                <button
-                  onClick={() => setSelectedCategory("metals")}
-                  className={`block w-full text-left py-2 px-3 rounded ${
-                    selectedCategory === "metals"
-                      ? "bg-black text-white"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  Lumine Metals
-                </button>
-                <button
-                  onClick={() => setSelectedCategory("essentials")}
-                  className={`block w-full text-left py-2 px-3 rounded ${
-                    selectedCategory === "essentials"
-                      ? "bg-black text-white"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  Lumine essentials
-                </button>
-                <button
-                  onClick={() => setSelectedCategory("special")}
-                  className={`block w-full text-left py-2 px-3 rounded ${
-                    selectedCategory === "special"
-                      ? "bg-black text-white"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  The Limited Edit
-                </button>
+        <h1 className="text-3xl font-bold mb-8">
+          Thank you for your order, {order.formData.firstName}!
+        </h1>
+        <p className="text-lg mb-8">
+          Your LUMINE shades are on their way. We'll notify you as soon as they
+          ship.
+        </p>
+
+        <div className="bg-gray-100 p-6 rounded-lg mb-8">
+          <h2 className="text-xl font-semibold mb-4">Your Order</h2>
+          {order.items.map((item, index) => (
+            <div key={index} className="flex gap-4 mb-4">
+              <div className="w-16 h-16 bg-gray-200 rounded overflow-hidden">
+                <img
+                  src={`https://www.wearlumine.com/qweqwe/sunglasses/${item.image}`}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-medium">{item.name}</h4>
+                <p className="text-sm text-gray-600 capitalize">{item.color}</p>
+                <p className="text-sm">Qty: {item.quantity}</p>
+              </div>
+              <div className="text-right">
+                <p>${(item.price * item.quantity).toFixed(2)}</p>
               </div>
             </div>
-          </div>
-
-          {/* Products Grid */}
-          <div className="lg:w-3/4">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-              {uniqueProducts.map((product) => (
-                <div key={product.id} className="group">
-                  <Link
-                    to={`/product/${product.id}/${product.color}`}
-                    className="block"
-                  >
-                    <div className="bg-gray-200 rounded-lg overflow-hidden mb-4 aspect-square">
-                      <img
-                        src={
-                          "https://www.wearlumine.com/qweqwe/sunglasses/" +
-                          product.images[0]
-                        }
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">
-                      {product.name}
-                      <p className="text-sm light-bold">${product.price}</p>
-                    </h3>
-                  </Link>
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition-colors duration-300 w-full"
-                  >
-                    Add to Cart
-                  </button>
+          ))}
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span>Order number</span>
+              <span>#{Math.floor(Math.random() * 10000)}</span>
+            </div>
+            {/* Show discount if applied */}
+            {order.formData.discount && (
+              <>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Total before discount</span>
+                  <span className="text-gray-500 line-through">
+                    ${(order.total / 0.75).toFixed(2)}
+                  </span>
                 </div>
-              ))}
+                <div className="flex justify-between">
+                  <span className="text-green-700 font-semibold">
+                    Discount applied
+                  </span>
+                  <span className="text-green-700 font-semibold">-25%</span>
+                </div>
+              </>
+            )}
+            <div className="flex justify-between">
+              <span>Total amount paid</span>
+              <span className="font-semibold">${order.total.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Payment method</span>
+              <span>{order.paymentMethod}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Shipping address</span>
+              <span>
+                {order.formData.address}, {order.formData.city}
+              </span>
             </div>
           </div>
+        </div>
+
+        {/* You might also like */}
+        <div className="flex-justify-center mt-16">
+          <h2 className=" text-2xl font-bold text-center mb-8">
+            You might also like
+          </h2>
+          <div className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            {randomProducts.map((relatedProduct, index) => (
+              <Link
+                key={relatedProduct?.id + relatedProduct?.color}
+                to={`/product/${relatedProduct?.id}/${relatedProduct?.color}`}
+              >
+                <div className="text-center">
+                  <div className="bg-gray-200 aspect-square rounded-lg mb-4">
+                    <img
+                      src={
+                        "https://wearlumine.com/qweqwe/sunglasses/" +
+                        relatedProduct?.images[0]
+                      }
+                      alt={`Related product ${index}`}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  </div>
+                  <h3 className="font-semibold mb-2">{relatedProduct?.name}</h3>
+                  <p className="font-bold">${relatedProduct?.price}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="text-center mt-16">
+          <Link
+            to="/"
+            className="inline-block bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition-colors duration-300"
+          >
+            Continue Shopping
+          </Link>
         </div>
       </div>
 
@@ -502,4 +528,4 @@ const CollectionPage = () => {
   );
 };
 
-export default CollectionPage;
+export default ThankYouPage;

@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 
 const ProductCategories = () => {
   const categories = [
-    { code: "metals",
+    {
+      code: "metals",
       name: "Lumine Metals",
       image:
         "https://wearlumine.com/qweqwe/imgs/metals.jpg?w=400&h=400&fit=crop",
@@ -17,7 +18,7 @@ const ProductCategories = () => {
       code: "special",
       name: "The Limited Edit",
       image:
-        "https://wearlumine.com/qweqwe/imgs/special.jpg?w=400&h=400&fit=crop",
+        "https://wearlumine.com/qweqwe/imgs/limited.jpg?w=400&h=400&fit=crop",
     },
   ];
 

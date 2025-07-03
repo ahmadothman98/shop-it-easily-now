@@ -1,87 +1,77 @@
-
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Info, Truck, RefreshCcw, CreditCard } from "lucide-react";
 
 const AboutPage = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       <Header />
-      
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-12">About Us</h1>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-            <div>
-              <h2 className="text-2xl font-bold mb-6">LUMINE</h2>
-              <div className="space-y-4 text-gray-600 leading-relaxed">
-                <p>
-                  See clearly. Shine confidently. Live luminously.
-                </p>
-                <p>
-                  Lumine is a Lebanese lifestyle eyewear brand that curates premium sunglasses for 
-                  individuals who value style, confidence, and quality. We carefully select pieces that 
-                  blend timeless design with modern sophistication—made to elevate your everyday 
-                  look.
-                </p>
-                <p>
-                  Every detail, from the frames we offer to the unboxing experience, reflects our 
-                  commitment to elegance and excellence. With Lumine, you're not just wearing 
-                  sunglasses—you're making a statement.
-                </p>
-              </div>
+
+      <div className="container mx-auto px-4 py-10 flex-1">
+        <h1 className="text-3xl font-bold mb-8 mt-4 lumine-title">About</h1>
+
+        <div className="space-y-6 max-w-2xl mx-auto">
+          {/* About Lumine */}
+          <div className="bg-white border rounded-lg p-6 flex flex-col gap-2">
+            <div className="flex items-center gap-2 mb-2">
+              <Info className="w-5 h-5 text-gray-700" />
+              <span className="font-semibold text-lg">About Lumine</span>
             </div>
-            <div className="bg-gray-200 rounded-lg aspect-square">
-              <img
-                src="https://images.unsplash.com/photo-1556656793-08538906a9f8?w=500&h=500&fit=crop"
-                alt="About Lumine"
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
+            <p className="text-gray-700">
+              Born along the Mediterranean coast of Lebanon. No loud logos, no
+              distractions, just subtle details that speak for themselves.
+            </p>
+            <p className="text-gray-700">
+              With clean lines, refined details, and accessible pricing, Lumine
+              invites you to see things differently, and to be seen your way.
+            </p>
           </div>
 
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">We don't create sunglasses. We curate confidence—with Lebanese pride.</h3>
-              <p className="text-gray-600 leading-relaxed">
-                At Lumine, we believe the right pair of sunglasses does more than shield your eyes—
-                it enhances your presence. Proudly based in Lebanon, we've built a brand centered 
-                around sourced curation, minimalist sophistication, and effortless confidence.
-              </p>
+          {/* Shipping Info */}
+          <div className="bg-white border rounded-lg p-6 flex flex-col gap-2">
+            <div className="flex items-center gap-2 mb-2">
+              <Truck className="w-5 h-5 text-gray-700" />
+              <span className="font-semibold text-lg">Shipping Info</span>
             </div>
+            <ul className="list-disc list-inside text-gray-700 space-y-1">
+              <li>We deliver all over Lebanon.</li>
+              <li>You will receive your package within 2-3 business days.</li>
+              <li>
+                Your order will be delivered safely, with respectful drivers.
+              </li>
+            </ul>
+          </div>
 
-            <div>
-              <p className="text-gray-600 leading-relaxed">
-                We source premium, fashion-forward sunglasses from trusted manufacturers, 
-                focusing on timeless silhouettes and versatile designs that match any warmer. Our 
-                commitment isn't just to great eyewear, but to the full experience—ensuring that 
-                from the moment your package arrives, it feels like something special. Each pair 
-                comes with our signature packaging: elegant, protective, and designed to leave a 
-                lasting impression.
-              </p>
+          {/* Exchange Policy */}
+          <div className="bg-white border rounded-lg p-6 flex flex-col gap-2">
+            <div className="flex items-center gap-2 mb-2">
+              <RefreshCcw className="w-5 h-5 text-gray-700" />
+              <span className="font-semibold text-lg">Exchange Policy</span>
             </div>
+            <ul className="list-disc list-inside text-gray-700 space-y-1">
+              <li>
+                You can contact us to exchange your glasses within 3 days of
+                receiving your order.
+              </li>
+              <li>We take the responsibility for the extra delivery fees.</li>
+            </ul>
+          </div>
 
-            <div>
-              <p className="text-gray-600 leading-relaxed">
-                Lumine is for the detail-oriented. The style-conscious. The ones who understand 
-                that what you wear is an extension of how you carry yourself. Whether you're 
-                heading to the beach, stepping into a meeting, or capturing content under the sun, 
-                Lumine sunglasses are made to be with you—bold, polished, and ready.
-              </p>
+          {/* Payment Method */}
+          <div className="bg-white border rounded-lg p-6 flex flex-col gap-2">
+            <div className="flex items-center gap-2 mb-2">
+              <CreditCard className="w-5 h-5 text-gray-700" />
+              <span className="font-semibold text-lg">Payment Method</span>
             </div>
-
-            <div className="border-t pt-8">
-              <h3 className="text-xl font-bold mb-4">Founder Note:</h3>
-              <p className="text-gray-600 leading-relaxed italic">
-                "Coming from Lebanon, a country that knows resilience and style, I believe that every 
-                sunglasses should be a reflection of who you are—confident, distinctive, and ready to shine 
-                no matter the circumstance. Lumine was created to honor that spirit."
-              </p>
-            </div>
+            <ul className="list-disc list-inside text-gray-700 space-y-1">
+              <li>COD (Cash on delivery)</li>
+              <li>Whish Money transfer</li>
+              {/* <li>Credit/Debit card.</li> */}
+            </ul>
           </div>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );
