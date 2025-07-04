@@ -1,8 +1,22 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Info, Truck, RefreshCcw, CreditCard } from "lucide-react";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const AboutPage = () => {
+    const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [location]);
+  
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
@@ -11,23 +25,29 @@ const AboutPage = () => {
         <h1 className="text-3xl font-bold mb-8 mt-4 lumine-title">About</h1>
 
         <div className="space-y-6 max-w-2xl mx-auto">
+          <section id="about-us">
+
           {/* About Lumine */}
           <div className="bg-white border rounded-lg p-6 flex flex-col gap-2">
             <div className="flex items-center gap-2 mb-2">
               <Info className="w-5 h-5 text-gray-700" />
-              <span className="font-semibold text-lg">About Lumině</span>
+              <span className="font-semibold text-lg">About Luminé</span>
             </div>
             <p className="text-gray-700">
               Born along the Mediterranean coast of Lebanon. No loud logos, no
               distractions, just subtle details that speak for themselves.
             </p>
             <p className="text-gray-700">
-              With clean lines, refined details, and accessible pricing, Lumině
+              With clean lines, refined details, and accessible pricing, Luminé
               invites you to see things differently, and to be seen your way.
             </p>
-          </div>
+            </div>
+          </section>
+            
 
           {/* Shipping Info */}
+          <section id="shopping_info">
+
           <div className="bg-white border rounded-lg p-6 flex flex-col gap-2">
             <div className="flex items-center gap-2 mb-2">
               <Truck className="w-5 h-5 text-gray-700" />
@@ -40,9 +60,12 @@ const AboutPage = () => {
                 Your order will be delivered safely, with respectful drivers.
               </li>
             </ul>
-          </div>
+            </div>
+            </section>
 
           {/* Exchange Policy */}
+          <section id="exchange_policy">
+
           <div className="bg-white border rounded-lg p-6 flex flex-col gap-2">
             <div className="flex items-center gap-2 mb-2">
               <RefreshCcw className="w-5 h-5 text-gray-700" />
@@ -55,9 +78,12 @@ const AboutPage = () => {
               </li>
               <li>We take the responsibility for the extra delivery fees.</li>
             </ul>
-          </div>
+            </div>
+            </section>
 
           {/* Payment Method */}
+          <section id="payment_method">
+
           <div className="bg-white border rounded-lg p-6 flex flex-col gap-2">
             <div className="flex items-center gap-2 mb-2">
               <CreditCard className="w-5 h-5 text-gray-700" />
@@ -68,7 +94,8 @@ const AboutPage = () => {
               <li>Whish Money transfer</li>
               {/* <li>Credit/Debit card.</li> */}
             </ul>
-          </div>
+            </div>
+            </section>
         </div>
       </div>
 

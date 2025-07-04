@@ -167,7 +167,7 @@ const CartPage = () => {
               {hasPreorders && (
                 <p className="text-sm text-gray-600 mb-4">
                   Preorder items will be placed once payment is completed or
-                  sent through Wish.
+                  sent through Whish.
                 </p>
               )}
 

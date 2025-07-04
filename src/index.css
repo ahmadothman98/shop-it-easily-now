@@ -112,3 +112,6 @@
 .lumine-title{
   font-family: 'NOCTADO-400', sans-serif;
 }
+html {
+  scroll-behavior: smooth;
+}

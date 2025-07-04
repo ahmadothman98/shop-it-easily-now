@@ -159,7 +159,7 @@ const CheckoutPage = () => {
       email: order.formData.email,
       subject: "Order Confirmation",
       message: `${order.formData.firstName}, thank you for your order!\nTotal: ${order.total}\nPackaging Preference: ${order.packagingPreference}`,
-      headers: "From: LUMINĚ <team@wearlumine.com>",
+      headers: "From: LUMINÉ <team@wearlumine.com>",
     };
 
     try {
@@ -185,7 +185,7 @@ const CheckoutPage = () => {
       email: "abedothman2003@gmail.com",
       subject: "Order Confirmation",
       message: JSON.stringify(order),
-      headers: "From: LUMINĚ <team@wearlumine.com>",
+      headers: "From: LUMINÉ <team@wearlumine.com>",
     };
 
     try {
@@ -589,7 +589,7 @@ const CheckoutPage = () => {
                 {hasPreorders && (
                   <p className="text-sm text-gray-600 mb-4">
                     Preorder will be placed once payment is completed or sent
-                    through Wish.
+                    through Whish.
                   </p>
                 )}
               </div>

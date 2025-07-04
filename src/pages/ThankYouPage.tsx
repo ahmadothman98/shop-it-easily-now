@@ -74,7 +74,7 @@ const ThankYouPage = () => {
           Thank you for your order, {order.formData.firstName}!
         </h1>
         <p className="text-lg mb-8">
-          Your LUMINĚ shades are on their way. We'll notify you as soon as they
+          Your LUMINÉ shades are on their way. We'll notify you as soon as they
           ship.
         </p>
 
@@ -158,7 +158,7 @@ const ThankYouPage = () => {
           {order.items.some((item) => item.preorder) && (
             <p className="text-sm text-gray-600 mt-4">
               Preorder items will be placed once payment is completed or sent
-              through Wish.
+              through Whish.
             </p>
           )}
         </div>

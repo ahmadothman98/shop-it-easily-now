@@ -93,7 +93,7 @@ const CollectionPage = () => {
                       : "hover:bg-gray-100"
                   }`}
                 >
-                  Lumině Metals
+                  Luminé Metals
                 </button>
                 <button
                   onClick={() => setSelectedCategory("essentials")}
@@ -103,7 +103,7 @@ const CollectionPage = () => {
                       : "hover:bg-gray-100"
                   }`}
                 >
-                  Lumině essentials
+                  Luminé essentials
                 </button>
                 <button
                   onClick={() => setSelectedCategory("special")}

@@ -34,8 +34,8 @@ const Header = () => {
           <Link to="/" className="text-2xl font-bold tracking-wider">
             <img
               src="https://wearlumine.com/qweqwe/imgs/white-black-logo.png"
-              style={{ width: "110px", height: "48px" }}
-              className="w-full h-full object-cover md:w-[140px] md:h-[70px] "
+              // style={{ width: "110px", height: "48px" }}
+              className="w-full h-full object-cover h-[48px] w-[110px] md:w-[180px] md:h-[90px] "
               alt=""
             />
           </Link>
