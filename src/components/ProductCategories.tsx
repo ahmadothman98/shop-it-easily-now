@@ -4,13 +4,13 @@ const ProductCategories = () => {
   const categories = [
     {
       code: "metals",
-      name: "Lumine Metals",
+      name: "Lumině Metals",
       image:
         "https://wearlumine.com/qweqwe/imgs/metals.jpg?w=400&h=400&fit=crop",
     },
     {
       code: "essentials",
-      name: "Lumine essentials",
+      name: "Lumině essentials",
       image:
         "https://wearlumine.com/qweqwe/imgs/essentials.jpg?w=400&h=400&fit=crop",
     },

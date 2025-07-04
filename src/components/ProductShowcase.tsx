@@ -4,19 +4,33 @@ import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 
 const ProductShowcase = () => {
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
 
   const handleAddToCart = (product) => {
-    console.log(product);
+    const existingItem = cartItems.find(
+      (item) =>
+        item.id === product.id &&
+        (item.color?.toLowerCase() || "") ===
+          (product.color?.toLowerCase() || "")
+    );
+    const currentQuantity = existingItem ? existingItem.quantity : 0;
 
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
-    });
-    toast.success("Added to cart!");
+    if (currentQuantity < product.available_stock) {
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity: 1,
+        color: product.color,
+        available_stock: product.available_stock,
+      });
+      toast.success(`${product.name} added to cart!`);
+    } else {
+      toast.error(
+        `Failed to add ${product.name}. Maximum stock reached (${product.available_stock}).`
+      );
+    }
   };
 
   const products = [

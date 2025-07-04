@@ -17,7 +17,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "@/firebase";
-import { CheckCircle, XCircle, Loader2 } from "lucide-react"; // Add this import at the top
+import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 
 export interface CartItem {
   id: string;
@@ -26,7 +26,8 @@ export interface CartItem {
   image: string;
   price: number;
   quantity: number;
-  available_stock?: number; // Added the available_stock property
+  available_stock?: number;
+  preorder?: boolean; // Added preorder property
 }
 
 const CheckoutPage = () => {
@@ -44,7 +45,7 @@ const CheckoutPage = () => {
     discount: "",
     giftDetails: "",
   });
-  const [giftPackaging, setGiftPackaging] = useState({}); // { [itemId_color]: number }
+  const [giftPackaging, setGiftPackaging] = useState({});
   const [discountValid, setDiscountValid] = useState<null | boolean>(null);
   const [discountLoading, setDiscountLoading] = useState(false);
   const navigate = useNavigate();
@@ -72,13 +73,27 @@ const CheckoutPage = () => {
     setDiscountLoading(false);
   };
 
+  const getRegularTotal = () => {
+    return cartItems
+      .filter((item) => !item.preorder)
+      .reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
+  const getPreorderTotal = () => {
+    return cartItems
+      .filter((item) => item.preorder)
+      .reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
   const getDiscountedTotal = () => {
-    let subtotal = getCartTotal();
+    let subtotal = getRegularTotal();
     if (discountValid) {
       subtotal = subtotal * 0.75;
     }
-    return subtotal;
+    return subtotal + getPreorderTotal();
   };
+
+  const hasPreorders = cartItems.some((item) => item.preorder);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,10 +122,12 @@ const CheckoutPage = () => {
       items: cartItems,
       total: getDiscountedTotal(),
       giftPackaging,
+      discountValid: discountValid, // Include discount validity
+      ...(discountValid && { discount: formData.discount }), // Add discount only if valid
     };
 
     try {
-      await sendOrder();
+      await sendOrder(orderDetails);
       toast.success("Order placed successfully!");
       clearCart();
 
@@ -121,15 +138,7 @@ const CheckoutPage = () => {
     }
   };
 
-  async function sendOrder() {
-    const orderDetails = {
-      formData,
-      paymentMethod,
-      packagingPreference,
-      items: cartItems,
-      total: getDiscountedTotal(),
-      giftPackaging,
-    };
+  async function sendOrder(orderDetails) {
     try {
       const docRef = await addDoc(collection(db, "orders"), {
         ...orderDetails,
@@ -150,7 +159,7 @@ const CheckoutPage = () => {
       email: order.formData.email,
       subject: "Order Confirmation",
       message: `${order.formData.firstName}, thank you for your order!\nTotal: ${order.total}\nPackaging Preference: ${order.packagingPreference}`,
-      headers: "From: LUMINE <team@wearlumine.com>",
+      headers: "From: LUMINĚ <team@wearlumine.com>",
     };
 
     try {
@@ -176,7 +185,7 @@ const CheckoutPage = () => {
       email: "abedothman2003@gmail.com",
       subject: "Order Confirmation",
       message: JSON.stringify(order),
-      headers: "From: LUMINE <team@wearlumine.com>",
+      headers: "From: LUMINĚ <team@wearlumine.com>",
     };
 
     try {
@@ -532,9 +541,19 @@ const CheckoutPage = () => {
                 </div>
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between">
+                    <span>Subtotal (excluding preorder)</span>
+                    <span>${getRegularTotal().toFixed(2)}</span>
+                  </div>
+                  {cartItems.some((item) => item.preorder) && (
+                    <div className="flex justify-between">
+                      <span>Preorder Total</span>
+                      <span>${getPreorderTotal().toFixed(2)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
                     <span>Subtotal</span>
                     <span>
-                      ${getCartTotal().toFixed(2)}
+                      ${getRegularTotal().toFixed(2)}
                       {discountValid && (
                         <span className="ml-2 text-green-600 font-semibold">
                           -25%
@@ -567,6 +586,12 @@ const CheckoutPage = () => {
                     </span>
                   </div>
                 </div>
+                {hasPreorders && (
+                  <p className="text-sm text-gray-600 mb-4">
+                    Preorder will be placed once payment is completed or sent
+                    through Wish.
+                  </p>
+                )}
               </div>
             </div>
           </div>

@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Contact */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">LUMINE</h3>
+            <h3 className="text-2xl font-bold mb-4">LUMINĚ</h3>
             <div className="space-y-2">
               <p className="flex items-center">
                 <MessageCircle size={16} className="mr-2" />

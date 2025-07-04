@@ -15,14 +15,14 @@ const AboutPage = () => {
           <div className="bg-white border rounded-lg p-6 flex flex-col gap-2">
             <div className="flex items-center gap-2 mb-2">
               <Info className="w-5 h-5 text-gray-700" />
-              <span className="font-semibold text-lg">About Lumine</span>
+              <span className="font-semibold text-lg">About Lumině</span>
             </div>
             <p className="text-gray-700">
               Born along the Mediterranean coast of Lebanon. No loud logos, no
               distractions, just subtle details that speak for themselves.
             </p>
             <p className="text-gray-700">
-              With clean lines, refined details, and accessible pricing, Lumine
+              With clean lines, refined details, and accessible pricing, Lumině
               invites you to see things differently, and to be seen your way.
             </p>
           </div>

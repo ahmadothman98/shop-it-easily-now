@@ -5,6 +5,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
+import { toast } from "sonner";
 
 interface CartItem {
   id: string;
@@ -20,8 +21,8 @@ interface CartItem {
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
-  removeFromCart: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  removeFromCart: (id: string, color?: string) => void;
+  updateQuantity: (id: string, quantity: number, color?: string) => void;
   clearCart: () => void;
   getCartTotal: () => number;
 }
@@ -33,8 +34,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem("cart");
-    if (stored) setCartItems(JSON.parse(stored));
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) setCartItems(JSON.parse(storedCart));
   }, []);
 
   // Save cart to localStorage whenever it changes
@@ -50,26 +51,49 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       if (existingItem) {
         return prev.map((cartItem) =>
           cartItem.id === item.id && cartItem.color === item.color
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            ? { ...cartItem, quantity: cartItem.quantity + item.quantity }
             : cartItem
         );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { ...item }];
     });
+    toast.success(`${item.name} added to cart!`);
   };
 
-  const removeFromCart = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const updateQuantity = (id: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(id);
-      return;
-    }
+  const removeFromCart = (id: string, color?: string) => {
     setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity } : item))
+      prev.filter(
+        (item) => !(item.id === id && item.color === (color || item.color))
+      )
     );
+  };
+
+  const updateQuantity = (id: string, quantity: number, color?: string) => {
+    setCartItems((prev) => {
+      const item = prev.find(
+        (cartItem) =>
+          cartItem.id === id && cartItem.color === (color || cartItem.color)
+      );
+      if (item && quantity > (item.available_stock || Infinity)) {
+        toast.error(
+          `Failed to update ${item.name}. Maximum stock reached (${item.available_stock}).`
+        );
+        return prev;
+      }
+      if (quantity <= 0) {
+        return prev.filter(
+          (cartItem) =>
+            !(
+              cartItem.id === id && cartItem.color === (color || cartItem.color)
+            )
+        );
+      }
+      return prev.map((cartItem) =>
+        cartItem.id === id && cartItem.color === (color || cartItem.color)
+          ? { ...cartItem, quantity }
+          : cartItem
+      );
+    });
   };
 
   const clearCart = () => {
