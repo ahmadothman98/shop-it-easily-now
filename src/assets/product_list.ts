@@ -36,7 +36,7 @@ export const product_list: Product[] = [
         id: 1,
         name: "Soho",
         category: "essentials",
-        color: "Brown",
+        color: "soho-brown",
         price: 19,
         available_stock: 2,
         images: [
@@ -58,7 +58,7 @@ export const product_list: Product[] = [
         id: 1,
         name: "Soho",
         category: "essentials",
-        color: "Offwhite",
+        color: "soho-offwhite",
         price: 19,
         available_stock: 2,
         images: [
@@ -69,7 +69,7 @@ export const product_list: Product[] = [
         id: 2,
         name: "Monaco",
         category: "metals",
-        color: "Pink",
+        color: "monaco-pink",
         price: 24,
         available_stock: 1,
         images: [
@@ -80,7 +80,7 @@ export const product_list: Product[] = [
         id: 2,
         name: "Monaco",
         category: "metals",
-        color: "Brown",
+        color: "monaco-brown",
         price: 24,
         available_stock: 3,
         images: [
@@ -91,7 +91,7 @@ export const product_list: Product[] = [
         id: 3,
         name: "Kyoto",
         category: "metals",
-        color: "Fullblack",
+        color: "kyoto-fullblack",
         price: 21,
         available_stock: 1,
         images: [
@@ -102,7 +102,7 @@ export const product_list: Product[] = [
         id: 3,
         name: "Kyoto",
         category: "metals",
-        color: "Black",
+        color: "kyoto-black",
         price: 21,
         available_stock: 1,
         images: [
@@ -113,7 +113,7 @@ export const product_list: Product[] = [
         id: 3,
         name: "Kyoto",
         category: "metals",
-        color: "Brown",
+        color: "kyoto-brown",
         price: 21,
         available_stock: 1,
         images: [
@@ -124,7 +124,7 @@ export const product_list: Product[] = [
         id: 4,
         name: "Côte",
         category: "essentials",
-        color: "Brown",
+        color: "cote-brown",
         price: 22,
         available_stock: 3,
         images: [
@@ -135,7 +135,7 @@ export const product_list: Product[] = [
         id: 4,
         name: "Côte",
         category: "essentials",
-        color: "Bordeux",
+        color: "cote-bord",
         price: 22,
         available_stock: 1,
         images: [
@@ -168,7 +168,7 @@ export const product_list: Product[] = [
         id: 5,
         name: "Venice",
         category: "metals",
-        color: "Baby-blue",
+        color: "veince-blu",
         price: 25,
         available_stock: 0,
         images: [
@@ -201,7 +201,7 @@ export const product_list: Product[] = [
         id: 7,
         name: "Beirut",
         category: "essentials",
-        color: "Orange",
+        color: "borange",
         price: 24,
         available_stock: 3,
         images: [
@@ -212,7 +212,7 @@ export const product_list: Product[] = [
         id: 7,
         name: "Beirut",
         category: "essentials",
-        color: "Leopard-and-black",
+        color: "Leopard",
         price: 24,
         available_stock: 1,
         images: [
@@ -234,7 +234,7 @@ export const product_list: Product[] = [
         id: 7,
         name: "Beirut",
         category: "essentials",
-        color: "Blue",
+        color: "bblue",
         price: 24,
         available_stock: 1,
         images: [
@@ -256,7 +256,7 @@ export const product_list: Product[] = [
         id: 8,
         name: "Riviera",
         category: "metals",
-        color: "Move",
+        color: "rmove",
         price: 25,
         available_stock: 1,
         images: [
@@ -289,7 +289,7 @@ export const product_list: Product[] = [
         id: 9,
         name: "Seoul",
         category: "essentials",
-        color: "green",
+        color: "sgreen",
         price: 22,
         available_stock: 3,
         images: [
@@ -300,7 +300,7 @@ export const product_list: Product[] = [
         id: 10,
         name: "Porto",
         category: "metals",
-        color: "Black, gold-metal",
+        color: "porto-black",
         price: 24,
         available_stock: 0,
         images: [
@@ -311,7 +311,7 @@ export const product_list: Product[] = [
         id: 10,
         name: "Porto",
         category: "metals",
-        color: "Brown",
+        color: "porto-brown",
         price: 24,
         available_stock: 2,
         images: [
@@ -333,7 +333,7 @@ export const product_list: Product[] = [
         id: 11,
         name: "Miami",
         category: "essentials",
-        color: "Pink",
+        color: "mpink",
         price: 20,
         available_stock: 2,
         images: [
@@ -390,7 +390,7 @@ export const product_list: Product[] = [
         category: "essentials",
         color: "Black",
         price: 21,
-        available_stock: 3,
+        available_stock: 2,
         images: [
             "lumine website edited (42 of 175).jpg"
         ],
@@ -399,7 +399,7 @@ export const product_list: Product[] = [
         id: 13,
         name: "Cannes",
         category: "essentials",
-        color: "Yellow",
+        color: "cyellow",
         price: 22,
         available_stock: 1,
         images: [
@@ -410,7 +410,7 @@ export const product_list: Product[] = [
         id: 13,
         name: "Cannes",
         category: "essentials",
-        color: "Offwhite-Brownlens",
+        color: "coffwhite",
         price: 22,
         available_stock: 1,
         images: [
@@ -421,7 +421,7 @@ export const product_list: Product[] = [
         id: 14,
         name: "Orbit",
         category: "special",
-        size: "large",
+        size: "49mm",
         color: "Black-lens-silver-metal",
         price: 45,
         available_stock: 1,
@@ -433,7 +433,7 @@ export const product_list: Product[] = [
         id: 14,
         name: "Orbit",
         category: "special",
-        size: "small",
+        size: "42.5mm",
         color: "Black-lens-gold-metal",
         price: 45,
         available_stock: 1,

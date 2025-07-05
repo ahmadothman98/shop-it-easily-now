@@ -220,7 +220,7 @@ const ProductPage = () => {
 
             {/* Color Selection */}
             <div>
-              <h3 className="font-semibold mb-3">Select color</h3>
+              <h3 className="font-semibold mb-3">{product?.size? 'Select size' : 'Select color'}</h3>
               <div className="flex space-x-3 mb-4">
                 {product_list
                   .filter((p) => p.id.toString() == id)
@@ -228,28 +228,18 @@ const ProductPage = () => {
                     <button
                       key={product?.color}
                       onClick={() => setSelectedColor(product?.color)}
-                      className={`w-8 h-8 rounded-full border-2 ${
+                      className={!product?.size? `w-8 h-8 rounded-full border-2  bg-[length:300%] bg-no-repeat bg-center bg-${product?.color} ${
                         selectedColor === product?.color
-                          ? "border-black"
+                          ? "border-gray-400"
                           : "border-gray-300"
-                      }`}
-                      style={{
-                        background:
-                          product?.color.toLowerCase() === "black"
-                            ? "#222"
-                            : product?.color.toLowerCase() === "brown"
-                            ? "#a0522d"
-                            : product?.color.toLowerCase() === "gold"
-                            ? "#e6c200"
-                            : product?.color.toLowerCase() === "yellow"
-                            ? "#ffe066"
-                            : product?.color.toLowerCase() === "white"
-                            ? "#fff"
-                            : "#ccc",
-                      }}
+                      }`: `w-14 h-9 border-2 border-gray-300 ${
+                        selectedColor === product?.color
+                          ? "bg-gray-200"
+                          : ""
+                      } `}
                       aria-label={product?.color}
                       type="button"
-                    />
+                    >{product?.size}</button>
                   ))}
               </div>
             </div>
@@ -337,7 +327,7 @@ const ProductPage = () => {
             </div>
             <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
               <span className="font-medium text-gray-800 text-center">
-                Cleaning Tissue
+                Cleaning Napkin
               </span>
             </div>
             <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm">

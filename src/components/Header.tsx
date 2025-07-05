@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
@@ -6,7 +6,17 @@ import { useCart } from "../context/CartContext";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartItems } = useCart();
+  const [isMobile, setIsMobile] = useState(false);
 
+   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize(); // run on load
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+   }, []);
+  
   const cartItemCount = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
@@ -34,7 +44,10 @@ const Header = () => {
           <Link to="/" className="text-2xl font-bold tracking-wider">
             <img
               src="https://wearlumine.com/qweqwe/imgs/white-black-logo.png"
-              // style={{ width: "110px", height: "48px" }}
+            style={{
+                    width: isMobile ? '110px' : '180px',
+                    height: isMobile ? '48px' : '90px',
+              }}
               className="w-full h-full object-cover h-[48px] w-[110px] md:w-[180px] md:h-[90px] "
               alt=""
             />

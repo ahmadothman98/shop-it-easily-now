@@ -1,5 +1,5 @@
 .bg-Leopard {
-    background: linear-gradient(135deg, #D4A373, #A47551, #3A2E2A);
+    background-image: url('https://wearlumine.com/qweqwe/imgs/leopard.png')
 }
 
 
@@ -137,4 +137,111 @@ background: linear-gradient(90deg,
 
 .bg-Black-lens-gold-metal {
 background: linear-gradient(90deg, #000000, #e7c671);
+}
+
+
+
+
+.bg-soho-brown{
+    background: #5e2f1d;
+}
+.bg-soho-offwhite{
+    background: #faf0e6
+}
+.bg-monaco-pink{
+    background: #e4cbc1;
+}
+.bg-monaco-brown{
+    background: #e4cbc1;
+}
+
+.bg-kyoto-fullblack{
+    background: #000;
+}
+.bg-kyoto-black {
+        width: 32px;
+            height: 32px;
+    border-radius: 50%;
+    background: #f7e7ce;
+    /* outer ring color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-kyoto-black::before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background: #272f38;
+    /* inner disc color */
+    border-radius: 50%;
+}
+
+.bg-kyoto-brown{
+    background: #472b1b;
+}
+
+.bg-cote-brown{
+    background: #3e1a19;
+}
+
+.bg-cote-bord{
+    background: #3e261b;
+}
+
+.bg-veince-blu{
+   background: #c9d5e8;
+}
+
+.bg-borange{
+    background: #d89551;
+}
+
+.bg-bblue{
+    background: #6fadd9;
+}
+
+
+.bg-rmove{
+    background: #785f62;
+}
+
+.bg-sgreen{
+    background: #d89551;
+}
+
+
+.bg-porto-black {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f7e7ce;
+    /* outer ring color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-porto-black::before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background: #000;
+    /* inner disc color */
+    border-radius: 50%;
+}
+.bg-porto-brown{
+    background: #472b1b;
+}
+.bg-mpink{
+    background: #f4bde3;
+}
+
+.bg-cyellow{
+    background: #bc7101;
+}
+
+.bg-coffwhite{
+    background: #faf0e6;
 }
