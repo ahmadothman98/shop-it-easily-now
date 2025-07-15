@@ -5,6 +5,16 @@ import { useEffect, useState } from "react";
 import { product_list } from "@/assets/product_list";
 
 const ThankYouPage = () => {
+
+    // const [product_list, setPList] = useState([])
+    
+    // useEffect(() => {
+    //   async function fetchData(){
+    //     setPList(await getProducts())
+    //   }
+    //   fetchData();
+    // }, [])
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []); // Runs once on component mount

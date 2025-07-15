@@ -12,6 +12,9 @@ import CheckoutPage from "./pages/CheckoutPage";
 import CartPage from "./pages/CartPage";
 import NotFound from "./pages/NotFound";
 import ThankYouPage from "./pages/ThankYouPage";
+import SignIn from "./pages/SignInPage";
+import EditProducts from "./pages/EditProduct";
+import OrdersPage from "./pages/ordersPage";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +33,9 @@ const App = () => (
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
+              <Route path="/el-admin-aboodi" element={<SignIn />} />
+        {/* <Route path="/edit-products" element={<EditProducts />} /> */}
+        <Route path="/my-orders" element={<OrdersPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

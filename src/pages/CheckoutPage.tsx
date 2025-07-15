@@ -158,7 +158,11 @@ const CheckoutPage = () => {
     const payload = {
       email: order.formData.email,
       subject: "Order Confirmation",
-      message: `${order.formData.firstName}, thank you for your order!\nTotal: ${order.total}\nPackaging Preference: ${order.packagingPreference}`,
+      message: `${
+        order.formData.firstName
+      }, thank you for your order!\nTotal: ${
+        getDiscountedTotal() + (getDiscountedTotal() < 50 ? 4 : 0)
+      }\nPackaging Preference: ${order.packagingPreference}`,
       headers: "From: LUMINÉ <team@wearlumine.com>",
     };
 

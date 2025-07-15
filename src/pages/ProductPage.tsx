@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useFetcher, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,14 @@ const ProductPage = () => {
   const [added_items, setAddedItems] = useState([]);
   const [randomProducts, setRandomProducts] = useState([]);
   const [showPreorderModal, setShowPreorderModal] = useState(false);
-
+  // const [product_list, setPList] = useState([])
+  
+  // useEffect(() => {
+  //   async function fetchData(){
+  //     setPList(await getProducts())
+  //   }
+  //   fetchData();
+  // },[])
   useEffect(() => {
     setSelectedColor(color);
   }, [color]);
@@ -215,7 +222,7 @@ const ProductPage = () => {
                 {product?.name}
               </h1>
               <p className="text-2xl mb-2">${product?.price}</p>
-              {/* {product?.description} */}
+              {product?.description}
             </div>
 
             {/* Color Selection */}
@@ -232,7 +239,7 @@ const ProductPage = () => {
                         selectedColor === product?.color
                           ? "border-gray-400"
                           : "border-gray-300"
-                      }`: `w-14 h-9 border-2 border-gray-300 ${
+                      }`: `px-2 h-9 border-2 border-gray-300 ${
                         selectedColor === product?.color
                           ? "bg-gray-200"
                           : ""

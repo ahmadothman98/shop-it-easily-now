@@ -8,6 +8,16 @@ import { toast } from "sonner";
 import { product_list } from "@/assets/product_list";
 
 const CollectionPage = () => {
+
+    // const [product_list, setPList] = useState([])
+    
+    // useEffect(() => {
+    //   async function fetchData(){
+    //     setPList(await getProducts())
+    //   }
+    //   fetchData();
+    // }, [])
+  
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const { addToCart, cartItems } = useCart();
